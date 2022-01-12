@@ -1,4 +1,5 @@
-import React, {Component} from "react";
+import { Input, TextField } from "@mui/material";
+import {Component} from "react";
 import '../App.css'
 class SearchComp extends Component{
     constructor(props){
@@ -7,12 +8,8 @@ class SearchComp extends Component{
             search:""
         }
     }
-   
     render(){
-        return  <div className="searchDiv">
-            <input placeholder="search" onChange={(e)=>this.props.cbk(e.target.value.toLowerCase())}/>
-            {/* <input type="button" value="Search" onClick={()=>{this.props.cbk(this.state.search)}}/> */}
-        </div>
+        return  <TextField fullWidth label="search" onChange={(e)=>this.props.cbk(e.target.value.toLowerCase())} />
     }
 }
 

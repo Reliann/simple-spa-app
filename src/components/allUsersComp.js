@@ -1,9 +1,12 @@
-import React, {Component} from "react";
+import {Component} from "react";
 import dataUtils from "./dataUtils";
 import UserComp from "./userComp";
 import SearchComp from "./searchComp";
 import AddUser from "./addUserComp";
 import '../App.css'
+import { Box, Button, Dialog, Grid, Typography } from "@mui/material";
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+
 class AllUsers extends Component{
     constructor(){
         super()
@@ -47,25 +50,25 @@ class AllUsers extends Component{
     }
 
     render(){
-        if(!this.state.newUserScreen){
-            return  <div>
-                        <h3>Users:</h3>
-                        <div className="userOptionsBar">
-                            <SearchComp cbk={(value)=>{this.setState({search:value})}}/>
-                            <input type="button" value="Add New User" onClick={()=>{this.setState({newUserScreen:true})}}/>
-                        </div>
-                        
-                        <div className="usersContainer">
-                            {this.state.usersToShow.map(user=> {
-                                return <UserComp key={user.id} user={user} idToDelete={id=>this.setState({idToDelete:id})} userToUpdate={user=>this.setState({userToUpdate:user})} />
-                            })}
-                        </div>
-                    </div>
-        }
-        return <div>
-            <AddUser addUser = {(user)=>{user.id = this.state.lastId ; this.setState(prev=>({lastId:prev.lastId+1,addedUser:user, newUserScreen:false}))}} opCanceled = {()=>{this.setState({newUserScreen:false})}}/>
-        </div>
         
+            return  <Box width="100vw" sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+                <Typography variant="h2" component="h1" sx={{textAlign:"center"}}>
+                    Users from JPH!
+                </Typography>
+                <Box sx={{width:"50%"}}>
+                    <SearchComp cbk={(value)=>{this.setState({search:value})}}/>
+                    <Button startIcon={<PersonAddAltIcon/>} type="button" value="Add New User" onClick={()=>{this.setState({newUserScreen:true})}}>Add User</Button>
+                </Box>
+                        
+                <Grid container gap={2} justifyContent={"center"}>
+                    {this.state.usersToShow.map(user=> {
+                        return <UserComp key={user.id} user={user} idToDelete={id=>this.setState({idToDelete:id})} userToUpdate={user=>this.setState({userToUpdate:user})} />
+                    })}
+                </Grid>
+                <Dialog open={this.state.newUserScreen} onClose={()=>{this.setState((prev)=>({...prev,newUserScreen:false}))}}>
+                    <AddUser addUser = {(user)=>{user.id = this.state.lastId ; this.setState(prev=>({lastId:prev.lastId+1,addedUser:user, newUserScreen:false}))}} opCanceled = {()=>{this.setState({newUserScreen:false})}}/>
+                </Dialog>
+            </Box>
     }
 }
 
