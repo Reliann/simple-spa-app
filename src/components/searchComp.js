@@ -9,7 +9,7 @@ class SearchComp extends Component{
         }
     }
     render(){
-        return  <TextField fullWidth label="search" onChange={(e)=>this.props.cbk(e.target.value.toLowerCase())} />
+        return  <TextField fullWidth label="Search by Name" onChange={(e)=>this.props.cbk(e.target.value.toLowerCase())} />
     }
 }
 

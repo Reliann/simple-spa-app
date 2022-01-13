@@ -30,7 +30,7 @@ class AllUsers extends Component{
     componentDidUpdate(prevProps,prevState){
         let filteredUsers = this.state.users
         if (prevState.search !== this.state.search && this.state.search) {
-            filteredUsers = this.state.users.filter(user => Object.values(user).some(val=>(JSON.stringify(val).toLowerCase().includes(this.state.search))))
+            filteredUsers = this.state.users.filter(user => (user.name.toLowerCase().includes(this.state.search)))
             this.setState({usersToShow: filteredUsers})
         }
         else if (prevState.userToUpdate !== this.state.userToUpdate) {
@@ -60,7 +60,7 @@ class AllUsers extends Component{
                     <Button startIcon={<PersonAddAltIcon/>} type="button" value="Add New User" onClick={()=>{this.setState({newUserScreen:true})}}>Add User</Button>
                 </Box>
                         
-                <Grid container gap={2} justifyContent={"center"}>
+                <Grid container gap={2} alignItems="none"  justifyContent={"center"}>
                     {this.state.usersToShow.map(user=> {
                         return <UserComp key={user.id} user={user} idToDelete={id=>this.setState({idToDelete:id})} userToUpdate={user=>this.setState({userToUpdate:user})} />
                     })}

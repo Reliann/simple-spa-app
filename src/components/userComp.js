@@ -2,65 +2,110 @@ import React, {Component} from "react";
 import '../App.css'
 import TodoList from "./allTodosComp";
 import PostList from "./allPostsComp";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Avatar, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Collapse, Dialog, Grid, IconButton, TextField, Typography } from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+
 class UserComp extends Component{
     constructor(props){
         super(props)
         this.state={
             moreData:false,
             user:this.props.user,
-            lists:false
+            todoList:false,
+            postList:false
         }
+    }
+    
+    render(){
+        
+        return(
+            <Card variant={"outlined"} sx={{border:this.state.user.todos.every(todo=>(todo.completed))?" 2px solid #33ff6d":"2px solid #ff334e"}}> 
+                <CardHeader
+                    avatar={
+                        <Avatar>
+                            {this.state.user.id}
+                        </Avatar>
+                    }
+                    action={
+                        <IconButton onClick={()=>{this.props.idToDelete(this.state.user.id)}}>
+                            <DeleteIcon sx={{fill:"red"}} />
+                        </IconButton>
+                    }
+                title={this.state.user.name}
+            />         
+        <Box display="flex" flexDirection="column" justifyContent="center"  
+            sx={{ paddingX:"4%"}}>
+            
+
+            <TextField
+                margin="dense"
+                label="Name"
+                value={this.state.user.name}
+                variant="filled"
+                onChange={(e)=>{this.setState((prev)=>({...prev,user:{...prev.user,name:e.target.value}}))}}
+            />
+            <TextField
+                margin="dense"
+                label="Email"
+                value={this.state.user.email}
+                variant="filled"
+                onChange={(e)=>{this.setState((prev)=>({...prev,user:{...prev.user,email:e.target.value}}))}}
+            />
+            <Button  onClick={()=>{this.setState(prev=>({...prev,moreData:!prev.moreData}))}}>{this.state.moreData?<ExpandLessIcon/>:<ExpandMoreIcon/>}</Button>
+            <Collapse in={this.state.moreData}>
+                <Box display="flex" flexDirection={"column"} justifyContent="center">
+                    <TextField
+                        margin="dense"
+                        label="City"
+                        value={this.state.user.address.city}
+                        variant="filled"
+                        onChange={(e)=>{this.setState((prev)=>({...prev,user:{...prev.user,address:{...prev.user.address,city:e.target.value}}}))}}
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Street"
+                        value={this.state.user.address.street}
+                        variant="filled"
+                        onChange={(e)=>{this.setState((prev)=>({...prev,user:{...prev.user,address:{...prev.user.address,street:e.target.value}}}))}}
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Zip-Code"
+                        value={this.state.user.address.zipcode}
+                        variant="filled"
+                        onChange={(e)=>{this.setState((prev)=>({...prev,user:{...prev.user,address:{...prev.user.address,zipcode:e.target.value}}}))}}
+                    />
+                </Box>
+                
+            </Collapse>
+
+            <CardActions>
+                <Button size="small" onClick={()=>{this.props.userToUpdate(this.state.user)}}>Update</Button>
+                <Button size="small" onClick={()=>{this.setState({todoList:true})}}>Todos</Button>
+                <Button size="small" onClick={()=>{this.setState({postList:true})}}>Posts</Button>
+            </CardActions>
+                
+            <Dialog open={this.state.todoList} onClose={()=>(this.setState((prev)=>({...prev, todoList:false})))}>
+                <TodoList todos={this.state.user.todos} id={this.state.user.id}  listUpdate={(updatedList)=>{
+                    this.setState((prev)=>({...prev,user:{...prev.user,todos:updatedList}}))
+                    this.props.userToUpdate(this.state.user)
+                    }}/>
+                <Button variant="contained"  variant="contained"onClick={()=>{this.setState({todoList:false})}}>Close</Button> 
+
+            </Dialog>     
+            <Dialog open={this.state.postList} onClose={()=>(this.setState((prev)=>({...prev, postList:false})))}>
+                <PostList posts={this.state.user.posts} id={this.state.user.id} listUpdate={(updatedList)=>{
+                    this.setState((prev)=>({...prev,user:{...prev.user,posts:updatedList}}))
+                    this.props.userToUpdate(this.state.user)
+                }}/>
+                <Button variant="contained"  variant="contained"onClick={()=>{this.setState({postList:false})}}>Close</Button> 
+
+            </Dialog>
+        </Box></Card>
+        )}
     }
 
-    render(){
-        let addressData = <div>
-            City: <input value={this.state.user.address.city} onChange={(e)=>{this.setState((prev)=>{
-                prev.user.address.city=e.target.value;
-                return {user:prev.user}})}}/><br/>
-            Street: <input value={this.state.user.address.street} onChange={(e)=>{this.setState((prev)=>{
-                prev.user.address.street=e.target.value;
-                return {user:prev.user}})}}/><br/>
-            Zip-Code: <input value={this.state.user.address.zipcode} onChange={(e)=>{this.setState((prev)=>{
-                console.log(prev);
-                prev.user.address.zipcode=e.target.value;
-                return {user:prev.user}})}}/><br/>
-        </div>
-        if (this.state.lists){
-            return <div className="redBackground userLists">
-                <input type="button" value="close" onClick={()=>{this.setState({lists:false})}}/>
-                <div className="UserListsContainer">       
-                        <TodoList todos={this.state.user.todos} id={this.state.user.id}  listUpdate={(updatedList)=>{this.setState((prev)=>{
-                            let updatedUser = prev.user
-                            updatedUser.todos= updatedList
-                            return {user:updatedUser}
-                        })
-                        this.props.userToUpdate(this.state.user)
-                        }}/>
-                        <PostList posts={this.state.user.posts} id={this.state.user.id} listUpdate={(updatedList)=>{this.setState((prev)=>{
-                            let updatedUser = prev.user
-                            updatedUser.posts= updatedList
-                            return {user:updatedUser}
-                        })
-                        this.props.userToUpdate(this.state.user)
-                        }}/>
-                </div>
-            </div>
-        }
-        return  <div className={this.state.user.todos.every(todo=>(todo.completed))?"completedTasks":"uncomplededTasks"}>
-            <span onClick={()=>{this.setState({lists:true})}}>ID: {this.state.user.id}</span><br/>
-            Name: <input value={this.state.user.name} onChange={(e)=>{this.setState((prev)=>{
-                prev.user.name=e.target.value;
-                return {user:prev.user}})}}/><br/>
-            Email: <input value={this.state.user.email} onChange={(e)=>{this.setState((prev)=>{
-                prev.user.email=e.target.value;
-                return {user:prev.user}})}}/><br/>
-            <input type="button" value="Other Data" onMouseEnter={()=>{this.setState({moreData:true})}} onClick={()=>{this.setState({moreData:false})}}/><br/>
-            {this.state.moreData&&addressData}
-            <input type="button" value="Update" onClick={()=>{this.props.userToUpdate(this.state.user)}}/>
-            <input type="button" value="Delete" onClick={()=>{this.props.idToDelete(this.state.user.id)}}/>
-            
-        </div>
-    }
-}
 
 export default UserComp

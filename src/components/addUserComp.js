@@ -22,7 +22,7 @@ class AddUser extends Component{
     }
 
     render(){
-        return  <Box  component="form"sx={{display:"flex", flexDirection:"column", padding:"5%"}}>
+        return  <Box sx={{display:"flex", flexDirection:"column", padding:"5%"}}>
             <Typography variant ="h3" component="h2" sx={{textAlign:"center"}}>
                 Add a new user!
             </Typography>
