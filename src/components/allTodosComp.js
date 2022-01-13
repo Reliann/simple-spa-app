@@ -48,7 +48,7 @@ class TodoList extends Component{
                 <AppBar position="sticky" sx={{marginBottom:"2vh"}} color="secondary">
                     <Grid container>
                     <Grid item xs={11}>
-                        <Button sx={{ my: 2, color: 'white', textAlign:"center" }}  onClick={()=>{this.setState({showAddInput:true})}} endIcon={<AddIcon/>}>
+                        <Button sx={{ my: 1, color: 'white', textAlign:"center" }}  onClick={()=>{this.setState({showAddInput:true})}} endIcon={<AddIcon/>}>
                             Add Todo
                         </Button>
                     </Grid>

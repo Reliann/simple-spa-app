@@ -1,5 +1,7 @@
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material";
 import React, {Component} from "react";
 import '../App.css'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 class Post extends Component{
     constructor(props){
@@ -9,10 +11,16 @@ class Post extends Component{
         }
     }
     render(){
-        return  <div className="item">
-            <span>Title: {this.state.post.title}</span><br/>
-            <span>Body: {this.state.post.body}</span>
-        </div>
+        return  <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                <Typography variant="h6" component={"h3"}>
+                    {this.state.post.title}
+                </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                {this.state.post.body}
+            </AccordionDetails>
+        </Accordion>
     }
 }
 

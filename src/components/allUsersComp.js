@@ -4,7 +4,7 @@ import UserComp from "./userComp";
 import SearchComp from "./searchComp";
 import AddUser from "./addUserComp";
 import '../App.css'
-import { Box, Button, Dialog, Grid, Typography } from "@mui/material";
+import { Box, Button, Dialog, Grid, Paper, Typography } from "@mui/material";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 
 class AllUsers extends Component{
@@ -51,19 +51,24 @@ class AllUsers extends Component{
 
     render(){
         
-            return  <Box width="100vw" sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+            return  <Box sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
                 <Typography variant="h2" component="h1" sx={{textAlign:"center"}}>
                     Users from JPH!
                 </Typography>
-                <Box sx={{width:"50%"}}>
+                <Paper variant="outlined" sx={{marginY:"2vh",width:"100%",display:"flex", justifyContent:"center"}}>
+                <Box sx={{gap:"5vw", marginY:"2vh", width:"60%"}} display={"flex"} justifyContent={"center"}>
                     <SearchComp cbk={(value)=>{this.setState({search:value})}}/>
-                    <Button startIcon={<PersonAddAltIcon/>} type="button" value="Add New User" onClick={()=>{this.setState({newUserScreen:true})}}>Add User</Button>
+                    <Button sx={{bgcolor:"secondary", width:"30%"}} variant="contained" startIcon={<PersonAddAltIcon/>} onClick={()=>{this.setState({newUserScreen:true})}}>Add User</Button>
                 </Box>
+                </Paper>
+
                         
                 <Grid container gap={2} alignItems="none"  justifyContent={"center"}>
-                    {this.state.usersToShow.map(user=> {
-                        return <UserComp key={user.id} user={user} idToDelete={id=>this.setState({idToDelete:id})} userToUpdate={user=>this.setState({userToUpdate:user})} />
-                    })}
+                    {this.state.usersToShow.map(user=> (
+                        <Grid item xs={3}>
+                        <UserComp key={user.id} user={user} idToDelete={id=>this.setState({idToDelete:id})} userToUpdate={user=>this.setState({userToUpdate:user})} />
+                        </Grid>
+                    ))}
                 </Grid>
                 <Dialog open={this.state.newUserScreen} onClose={()=>{this.setState((prev)=>({...prev,newUserScreen:false}))}}>
                     <AddUser addUser = {(user)=>{user.id = this.state.lastId ; this.setState(prev=>({lastId:prev.lastId+1,addedUser:user, newUserScreen:false}))}} opCanceled = {()=>{this.setState({newUserScreen:false})}}/>

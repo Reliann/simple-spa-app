@@ -21,10 +21,10 @@ class UserComp extends Component{
     render(){
         
         return(
-            <Card variant={"outlined"} sx={{border:this.state.user.todos.every(todo=>(todo.completed))?" 2px solid #33ff6d":"2px solid #ff334e"}}> 
+            <Card sx={{border:this.state.user.todos.every(todo=>(todo.completed))?" 2px solid #33ff6d":"2px solid #ff334e"}}> 
                 <CardHeader
                     avatar={
-                        <Avatar>
+                        <Avatar sx={{bgcolor:"secondary.light"}}>
                             {this.state.user.id}
                         </Avatar>
                     }
@@ -81,10 +81,10 @@ class UserComp extends Component{
                 
             </Collapse>
 
-            <CardActions>
-                <Button size="small" onClick={()=>{this.props.userToUpdate(this.state.user)}}>Update</Button>
-                <Button size="small" onClick={()=>{this.setState({todoList:true})}}>Todos</Button>
-                <Button size="small" onClick={()=>{this.setState({postList:true})}}>Posts</Button>
+            <CardActions sx={{justifyContent:"center"}}>
+                <Button sx={{color:"primary.light"}}  onClick={()=>{this.props.userToUpdate(this.state.user)}}>Update</Button>
+                <Button sx={{color:"primary.light"}}  onClick={()=>{this.setState({todoList:true})}}>Todos</Button>
+                <Button sx={{color:"primary.light"}} onClick={()=>{this.setState({postList:true})}}>Posts</Button>
             </CardActions>
                 
             <Dialog open={this.state.todoList} onClose={()=>(this.setState((prev)=>({...prev, todoList:false})))}>

@@ -1,4 +1,4 @@
-import { Input, TextField } from "@mui/material";
+import { Input, Paper, TextField } from "@mui/material";
 import {Component} from "react";
 import '../App.css'
 class SearchComp extends Component{
