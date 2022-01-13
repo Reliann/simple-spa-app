@@ -2,6 +2,9 @@ import React, {Component} from "react";
 import Todo from "./todoComp";
 import AddTask from "./addTaskComp";
 import '../App.css'
+import { AppBar, Box, Button, Grid, IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import AddIcon from '@mui/icons-material/Add';
 
 class TodoList extends Component{
     constructor(props){
@@ -41,14 +44,30 @@ class TodoList extends Component{
             }})}}/>
         }
         else{
-            return  <div className="inline-block">
-                <input type="button" value="Add Todo" onClick={()=>{this.setState({showAddInput:true})}}/>
-                <div className="itemList">
+            return  <Box>
+                <AppBar position="sticky" sx={{marginBottom:"2vh"}} color="secondary">
+                    <Grid container>
+                    <Grid item xs={11}>
+                        <Button sx={{ my: 2, color: 'white', textAlign:"center" }}  onClick={()=>{this.setState({showAddInput:true})}} endIcon={<AddIcon/>}>
+                            Add Todo
+                        </Button>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <IconButton onClick={()=>{this.props.toClose()}}>
+                            <CloseIcon sx={{fill:"red"}}/>
+                        </IconButton>
+                    </Grid>
+                    </Grid>
+                </AppBar>
+
+                
+                <Box display="flex" flexDirection={"column"}>
                     {this.state.todoList.map((todo)=>{
                         return <Todo key={todo.id} todo={todo} todoUpdate={(todo)=>{this.setState({todoToUpdate:todo})}}/>
                     })}
-                </div>
-            </div>
+                </Box>
+            </Box>
+                
         }
     }
 }

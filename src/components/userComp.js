@@ -88,19 +88,16 @@ class UserComp extends Component{
             </CardActions>
                 
             <Dialog open={this.state.todoList} onClose={()=>(this.setState((prev)=>({...prev, todoList:false})))}>
-                <TodoList todos={this.state.user.todos} id={this.state.user.id}  listUpdate={(updatedList)=>{
+                <TodoList toClose={()=>{this.setState({todoList:false})}} todos={this.state.user.todos} id={this.state.user.id}  listUpdate={(updatedList)=>{
                     this.setState((prev)=>({...prev,user:{...prev.user,todos:updatedList}}))
                     this.props.userToUpdate(this.state.user)
-                    }}/>
-                <Button variant="contained"  variant="contained"onClick={()=>{this.setState({todoList:false})}}>Close</Button> 
-
+                }}/>
             </Dialog>     
             <Dialog open={this.state.postList} onClose={()=>(this.setState((prev)=>({...prev, postList:false})))}>
-                <PostList posts={this.state.user.posts} id={this.state.user.id} listUpdate={(updatedList)=>{
+                <PostList toClose={()=>{this.setState({postList:false})}} posts={this.state.user.posts} id={this.state.user.id} listUpdate={(updatedList)=>{
                     this.setState((prev)=>({...prev,user:{...prev.user,posts:updatedList}}))
                     this.props.userToUpdate(this.state.user)
                 }}/>
-                <Button variant="contained"  variant="contained"onClick={()=>{this.setState({postList:false})}}>Close</Button> 
 
             </Dialog>
         </Box></Card>

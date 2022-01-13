@@ -1,3 +1,4 @@
+import { Box, Checkbox, Grid, Typography } from "@mui/material";
 import React, {Component} from "react";
 import '../App.css'
 
@@ -15,14 +16,21 @@ class Todo extends Component{
         }
     }
     render(){
-        return  <div className={(this.state.todo.completed?"completedTasks ":"uncomplededTasks ")+"item"}>
-            <span>Title: {this.state.todo.title}</span><br/>
-            <span>Status: {this.state.todo.completed?"true":"false"}</span>
-            {!this.state.todo.completed&&<input type="button" value="Mark Cpmpleted" onClick={()=>{this.setState(prev=>{
-                prev.todo.completed = true
-                return {todo:prev.todo}})}}/>
-            }
-        </div>
+        return  (
+        <Box className={(this.state.todo.completed?"completedTasks ":"uncomplededTasks ")+"item"}>
+            <Grid container>
+                <Grid item xs={11}>
+                    <Typography variant="body1" component="h3" textAlign={"center"}>
+                        {this.state.todo.title}
+                    </Typography>
+                </Grid>
+                <Grid item xs={1}>
+                    <Checkbox checked={this.state.todo.completed} disabled={this.state.todo.completed} onChange={()=>{
+                        this.setState(prev=>({...prev,todo:{...prev.todo, completed:true}}))
+                    }}/>
+                </Grid>
+            </Grid>
+        </Box>)
     }
 }
 
