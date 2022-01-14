@@ -63,7 +63,7 @@ class AllUsers extends Component{
                 </Paper>
 
                         
-                <Grid container gap={2} alignItems="none"  justifyContent={"center"}>
+                <Grid container gap={2} alignItems="none" paddingX="2vw" justifyContent={"center"}>
                     {this.state.usersToShow.map(user=> (
                         <Grid item xs key={user.id}>
                         <UserComp  user={user} idToDelete={id=>this.setState({idToDelete:id})} userToUpdate={user=>this.setState({userToUpdate:user})} />
