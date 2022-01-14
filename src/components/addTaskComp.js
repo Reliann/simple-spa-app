@@ -1,3 +1,4 @@
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import React, {Component} from "react";
 import '../App.css'
 
@@ -10,14 +11,30 @@ class AddTask extends Component{
     }
 
     render(){
-        return  <div>
-            title: <input type="text" placeholder="enter new task title" onChange={(e)=>{this.setState({taskName:e.target.value})}}/>
-            <input type="button" value="Add Task" onClick={()=>{
-                if (!this.state.taskName){return}
-                this.props.addTask(this.state.taskName)
-                this.setState({taskName:""})}}/>
-            <input type="button" value="Cancel" onClick={()=>{this.props.opCanceled()}}/>
-        </div>
+        return    <Box sx={{display:"flex", flexDirection:"column", padding:"5%"}}>
+        <Typography  variant ="h3" component="h2" sx={{textAlign:"center"}}>
+            Add a new task
+        </Typography>
+        <TextField required error={!this.state.taskName} 
+            margin="normal" 
+            onChange={(e)=>{this.setState({taskName:e.target.value})}} label="Title"/>
+        
+        <Grid container gap={2} justifyContent={"center"}>
+            <Grid item xs={4}>
+                <Button variant="contained" onClick={()=>{
+                    if (!this.state.taskName){return}
+                    this.props.addTask(this.state.taskName)
+                }}>
+                    Add
+                </Button>
+            </Grid>
+            <Grid>
+                <Button sx={{color:"red"}} onClick={()=>{this.props.opCanceled()}}>
+                    cancel
+                </Button>
+            </Grid>
+        </Grid>
+    </Box>
     }
 }
 

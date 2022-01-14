@@ -65,8 +65,8 @@ class AllUsers extends Component{
                         
                 <Grid container gap={2} alignItems="none"  justifyContent={"center"}>
                     {this.state.usersToShow.map(user=> (
-                        <Grid item xs={3}>
-                        <UserComp key={user.id} user={user} idToDelete={id=>this.setState({idToDelete:id})} userToUpdate={user=>this.setState({userToUpdate:user})} />
+                        <Grid item xs key={user.id}>
+                        <UserComp  user={user} idToDelete={id=>this.setState({idToDelete:id})} userToUpdate={user=>this.setState({userToUpdate:user})} />
                         </Grid>
                     ))}
                 </Grid>

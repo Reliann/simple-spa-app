@@ -11,7 +11,6 @@ class Todo extends Component{
     }
     componentDidUpdate(prevProps,prevState){
         if (prevState.todo != this.state.todo){
-            console.log("marked");
             this.props.todoUpdate(this.state.todo)
         }
     }

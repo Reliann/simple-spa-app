@@ -13,7 +13,7 @@ class TodoList extends Component{
             todoList:props.todos,
             todoToUpdate:{},
             showAddInput:false,
-            todoToAdd:null
+            todoToAdd:true
         }
     }
     componentDidUpdate(prevProps,prevState){
@@ -28,20 +28,22 @@ class TodoList extends Component{
             this.setState({todoList:updatedTodos})
             this.props.listUpdate(updatedTodos)
         }
-        else if(prevState.todoToAdd !== this.state.todoToAdd &&  this.state.todoToAdd ){
-            const updatedTodos = [this.state.todoToAdd,...this.state.todoList]
-            this.setState({todoList:updatedTodos})
-            this.props.listUpdate(updatedTodos)
+        else if(this.state.todoToAdd ){
+            this.setState(prev=>({...prev,todoToAdd:false}))
+            this.props.listUpdate(this.state.todoList)
         }
     }
     render(){
         if (this.state.showAddInput){
-            return <AddTask opCanceled = {()=>{this.setState({showAddInput:false})}} addTask={(taskName)=>{this.setState({showAddInput:false,todoToAdd:{
-                title:taskName,
-                completed:false,
-                userId:this.props.id,
-                id:this.state.todoList.length+1
-            }})}}/>
+            return <AddTask opCanceled = {()=>{this.setState({showAddInput:false})}} addTask={(taskName)=>{
+                this.setState((prev)=>({showAddInput:false, todoToAdd:true,
+                todoList:[{
+                    title:taskName,
+                    completed:false,
+                    userId:this.props.id,
+                    id:`${this.props.id}${prev.todoList.length+1}`
+                }, ...prev.todoList]}))
+            }}/>
         }
         else{
             return  <Box>
@@ -59,8 +61,6 @@ class TodoList extends Component{
                     </Grid>
                     </Grid>
                 </AppBar>
-
-                
                 <Box display="flex" flexDirection={"column"}>
                     {this.state.todoList.map((todo)=>{
                         return <Todo key={todo.id} todo={todo} todoUpdate={(todo)=>{this.setState({todoToUpdate:todo})}}/>

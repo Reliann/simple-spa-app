@@ -12,28 +12,27 @@ class PostList extends Component{
         this.state={
             postList:props.posts,
             showAddInput:false,
-            postToAdd:{}
+            postToAdd:false
         }
     }
     componentDidUpdate(prevProps,prevState){
         
-        if(prevState.postToAdd !== this.state.postToAdd &&  this.state.postToAdd !=={} ){
-            const new_post = {
-                id:this.state.postList.length+1,
-                userId:this.props.id,
-                title:this.state.postToAdd.title,
-                body:this.state.postToAdd.body
-            }
-            console.log(new_post);
-            const updatedTposts = [new_post,...this.state.postList]
-            this.setState({postList:updatedTposts})
-            this.props.listUpdate(updatedTposts)
+        if(this.state.postToAdd){
+
+            this.setState({postToAdd:false})
+            this.props.listUpdate(this.state.postList)
         }
     }
     render(){
         if (this.state.showAddInput){
             return <AddPost opCanceled = {()=>{this.setState({showAddInput:false})}} 
-                addPost={(post)=>{this.setState({postToAdd:post,showAddInput:false})}}
+                addPost={(post)=>{this.setState(prev=>({postToAdd:true,showAddInput:false, 
+                    postList:[{
+                        id:`${this.props.id}${prev.postList.length+1}`,
+                        userId:this.props.id,
+                        title:post.title,
+                        body:post.body
+                    },...prev.postList]}))}}
             />
         }
         else{
